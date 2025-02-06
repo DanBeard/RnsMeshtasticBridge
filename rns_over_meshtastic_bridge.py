@@ -9,6 +9,15 @@ import random
 from meshtastic.protobuf.mesh_pb2 import Data, MeshPacket, Constants, ToRadio, FromRadio
 from meshtastic.protobuf.portnums_pb2 import PRIVATE_APP, TEXT_MESSAGE_APP
 
+# TODO: refactor these to use the utils so it's all in one place
+import meshtastic_utils
+
+# Attempt to have meshtastic ask as a transport bus for RNS packets. 
+# Current status: works.... kinda. SHortfast is promising, but LongFast times out 9 times out of 10
+# Need to evaluate logic. Maybe latency is too high and there's a knob in RNS we can turn?
+
+
+
 # Configuration constants
 MT_MAGIC_0 = 0x94
 MT_MAGIC_1 = 0xc3

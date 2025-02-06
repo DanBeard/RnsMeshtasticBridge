@@ -1,21 +1,6 @@
-# MIT License - Copyright (c) 2024 Mark Qvist / unsigned.io
-
-# This example illustrates creating a custom interface
-# definition, that can be loaded and used by Reticulum at
-# runtime. Any number of custom interfaces can be created
-# and loaded. To use the interface place it in the folder
-# ~/.reticulum/interfaces, and add an interface entry to
-# your Reticulum configuration file similar to this:
-
-#  [[Example Custom Interface]]
-#    type = ExampleInterface
-#    enabled = no
-#    mode = gateway
-#    port = /dev/ttyUSB0
-#    speed = 115200
-#    databits = 8
-#    parity = none
-#    stopbits = 1
+# Attempt to have meshtastic act as a transport bus for RNS packets. 
+# Current status: works.... kinda. SHortfast is promising, but LongFast times out 9 times out of 10
+# Need to evaluate logic. Maybe latency is too high and there's a knob in RNS we can turn?
 
 from time import sleep
 import RNS
@@ -26,6 +11,9 @@ import socket
 import random
 
 from RNS.Interfaces.Interface import Interface
+# TODO: refactor these to use the utils so it's all in one place
+# TODO: but can't import here because of how RNS does dynamic loading of custom interfaces... hmmm
+#import meshtastic_utils
 
 # Configuration constants
 MT_MAGIC_0 = 0x94
