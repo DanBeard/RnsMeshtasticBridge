@@ -100,7 +100,7 @@ class MeshtasticInterface(Interface):
         # be the maximum data packet payload size that the
         # underlying medium is capable of handling in all
         # cases without any segmentation.
-        self.HW_MTU = meshtastic.protobuf.mesh_pb2.Constants.DATA_PAYLOAD_LEN - 10
+        self.HW_MTU = meshtastic.protobuf.mesh_pb2.Constants.DATA_PAYLOAD_LEN - 32 # Want less than payload to account for padding, 32 pulled out of hat
         self.owner = owner
         self.mesh_port_num = PRIVATE_APP
         
@@ -112,8 +112,8 @@ class MeshtasticInterface(Interface):
         
         # Configure internal properties on the interface
         # according to the supplied configuration.
-        self.timeout  = 1000
-        self.bitrate = 9000
+        self.timeout  = 6000
+        self.bitrate = 500
 
         # Since all required parameters are now configured,
         # we will try opening the TCP port.
@@ -197,10 +197,7 @@ class MeshtasticInterface(Interface):
             
             buflen = len(packet)
             result.append(bytes([MT_MAGIC_0, MT_MAGIC_1, (buflen >> 8) & 0xFF, buflen & 0xFF]) + packet)
-    
-        
-        
-            
+ 
         return result
     
     def _decode_mesh_packets(self,data):

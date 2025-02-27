@@ -14,6 +14,7 @@ recipient_hash = bytes.fromhex(recipient_hexhash)
 meshtastic_ip = "10.0.0.235"
 meshtastic_port = 4403
 meshtastic_channel_idx = 2
+MAX_ROUTE_TIMEOUT_MINS = 60 
 
 class RnsMeshtasticBridge:
     
@@ -52,12 +53,14 @@ class RnsMeshtasticBridge:
         router.register_delivery_callback(self.on_rns_recv)
         self.ident = RNS.Identity()
         self.source = router.register_delivery_identity(self.ident, display_name=display_name)
-        
+        self.router.announce(self.source.hash)
         recipient_hash = bytes.fromhex(recipient_hexhash)
 
-        if not RNS.Transport.has_path(recipient_hash):
+        timeout = 0
+        while not RNS.Transport.has_path(recipient_hash) and timeout/10 < MAX_ROUTE_TIMEOUT_MINS:
             RNS.log("Destination is not yet known. Requesting path and waiting for announce to arrive...")
             RNS.Transport.request_path(recipient_hash)
+            time.sleep(60/10)
             
 
         # Recall the server identity
